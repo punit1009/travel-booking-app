@@ -1,4 +1,4 @@
-# Travel Booking Application
+# TravelMedia234
 
 A modern, responsive travel booking platform built with React, TypeScript, and Material-UI. Discover and book amazing travel destinations and packages across India.
 
