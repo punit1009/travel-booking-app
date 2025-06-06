@@ -3,21 +3,28 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   const env = loadEnv(mode, process.cwd(), '');
   
   return {
     plugins: [react()],
-    base: env.NODE_ENV === 'production' ? '/travel-booking-app/' : '/',
+    // Use relative paths for Netlify
+    base: './',
     optimizeDeps: {
       exclude: ['lucide-react'],
     },
-    // Ensure proper routing in production
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
       sourcemap: true,
+      // Ensure proper chunking
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-router-dom'],
+            mui: ['@mui/material', '@emotion/react', '@emotion/styled'],
+          },
+        },
+      },
     },
     server: {
       port: 3000,

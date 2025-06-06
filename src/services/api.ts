@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001/api';
+// Use environment variable for API URL with fallback to relative path
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL.startsWith('http') ? API_URL : `${window.location.origin}${API_URL}`,
   headers: {
     'Content-Type': 'application/json',
   },
