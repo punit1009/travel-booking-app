@@ -2,7 +2,7 @@
 
 A modern, responsive travel booking platform built with React, TypeScript, and Material-UI. Discover and book amazing travel destinations and packages across India.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR_SITE_ID/deploy-status)](https://app.netlify.com/sites/YOUR_SITE_NAME/overview)
+[![Netlify Status]([https://api.netlify.com/api/v1/badges/YOUR_SITE_ID/deploy-status)](https://app.netlify.com/sites/YOUR_SITE_NAME/overview](https://superlative-bublanina-078ad4.netlify.app/))
 
 ## 🌟 Features
 
