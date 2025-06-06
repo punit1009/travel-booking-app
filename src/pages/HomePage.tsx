@@ -35,11 +35,14 @@ const HomePage: React.FC = () => {
   // Ensure destinations is always an array
   const destinations = Array.isArray(destinationsData) ? destinationsData : [];
 
-  const { data: packages = [], isLoading: packagesLoading } = useQuery({
+  const { data: packagesData = [], isLoading: packagesLoading } = useQuery({
     queryKey: ['packages'],
     queryFn: getPackages,
-    select: (data) => data.slice(0, 4),
+    select: (data) => Array.isArray(data) ? data.slice(0, 4) : [],
   });
+  
+  // Ensure packages is always an array
+  const packages = Array.isArray(packagesData) ? packagesData : [];
 
   const stats = [
     { icon: Users, value: '50,000+', label: 'Happy Travelers' },
