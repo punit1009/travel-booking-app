@@ -10,6 +10,7 @@ import {
   Avatar,
   Rating,
   Chip,
+  CircularProgress,
 } from '@mui/material';
 import { ArrowRight, MapPin, Star, Users, Award, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -21,11 +22,18 @@ import PackageCard from '../components/packages/PackageCard';
 import { getDestinations, getPackages } from '../services/api';
 
 const HomePage: React.FC = () => {
-  const { data: destinations = [], isLoading: destinationsLoading } = useQuery({
+  const { 
+    data: destinationsData, 
+    isLoading: destinationsLoading, 
+    error: destinationsError 
+  } = useQuery({
     queryKey: ['destinations'],
     queryFn: getDestinations,
-    select: (data) => data.slice(0, 6),
+    select: (data) => Array.isArray(data) ? data.slice(0, 6) : [],
   });
+  
+  // Ensure destinations is always an array
+  const destinations = Array.isArray(destinationsData) ? destinationsData : [];
 
   const { data: packages = [], isLoading: packagesLoading } = useQuery({
     queryKey: ['packages'],
@@ -254,13 +262,27 @@ const HomePage: React.FC = () => {
             </motion.div>
           </Box>
 
-          <Grid container spacing={4}>
-            {destinations.map((destination, index) => (
-              <Grid item xs={12} sm={6} lg={4} key={destination.id}>
-                <DestinationCard destination={destination} index={index} />
-              </Grid>
-            ))}
-          </Grid>
+          {destinationsLoading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: 4 }}>
+              <CircularProgress />
+            </Box>
+          ) : destinationsError ? (
+            <Typography color="error" sx={{ textAlign: 'center', my: 4 }}>
+              Failed to load destinations. Please try again later.
+            </Typography>
+          ) : destinations.length > 0 ? (
+            <Grid container spacing={4}>
+              {destinations.map((destination, index) => (
+                <Grid item xs={12} sm={6} lg={4} key={destination.id || index}>
+                  <DestinationCard destination={destination} index={index} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Typography color="text.secondary" sx={{ textAlign: 'center', my: 4 }}>
+              No destinations found.
+            </Typography>
+          )}
 
           <Box sx={{ textAlign: 'center', mt: 6 }}>
             <Button
